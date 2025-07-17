@@ -1,10 +1,18 @@
+from random import randint
 tasks = []
 
 
+def generate_task_id():
+    existing_ids = [task["id"] for task in tasks]
+
+    new_id = randint(1, 9999)
+    while new_id in existing_ids:
+        new_id = randint(1, 9999)
+    return new_id
+
+
 def add_new_task(task_name):
-    new_task = {
-        "task": task_name, "completed": False
-    }
+    new_task = {"id": generate_task_id(), "task": task_name, "completed": False}
     tasks.append(new_task)
     print("Task added")
 
@@ -17,7 +25,7 @@ def view_tasks():
             status = "not completed"
             if task["completed"] is True:
                 status = "completed"
-            print(f"{task["task"]} : {status}")
+            print(f"ID:{task["id"]} : {task["task"]} : {status}")
 
 
 exit = False
