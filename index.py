@@ -1,14 +1,3 @@
-# tasks = []
-
-# task = input('Add task: ')
-# newTask = {"taskName": task, "completed": False}
-# tasks.append(newTask)
-
-# print(f"{task} added to list.")
-
-# print(tasks[0])
-
-
 tasks = []
 
 
@@ -20,6 +9,17 @@ def add_new_task(task_name):
     print("Task added")
 
 
+def view_tasks():
+    if len(tasks) == 0:
+        print("There are currently no tasks.")
+    else:
+        for task in tasks:
+            status = "not completed"
+            if task["completed"] is True:
+                status = "completed"
+            print(f"{task["task"]} : {status}")
+
+
 exit = False
 print("Welcome to todolist-cli, enter help for a list of commands")
 while exit is not True:
@@ -29,7 +29,8 @@ while exit is not True:
         case "help":
             print("Commands: view, add, delete, complete, quit")
         case "view":
-            print("This is for viewing tasks")
+            print(f"Task count: {len(tasks)}")
+            view_tasks()
         case "add":
             task = input("Add new task: ")
             add_new_task(task)
