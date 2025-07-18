@@ -32,27 +32,42 @@ def view_tasks():
             print(f"ID:{task["id"]} : {task["task"]} : {status}")
 
 
+def log_method_decorator(func):
+    def log_method(*args, **kwargs):
+        view_tasks()
+        func(*args, **kwargs)
+    return log_method
+
+
+@log_method_decorator
 def complete_task(task_id):
     for task in tasks:
         if task["id"] == task_id:
             task["completed"] = True
             storage.save_to_json_file(tasks)
+            print("Task marked as completed")
             break
+    else:
+        print('ID not found')
 
 
+@log_method_decorator
 def delete_task(task_id):
     for task in tasks:
         if task["id"] == task_id:
             tasks.remove(task)
             storage.save_to_json_file(tasks)
+            print("Task successfully removed")
             break
+    else:
+        print('ID not found')
 
 
 exit = False
 print("Welcome to todolist-cli, enter help for a list of commands")
 while exit is not True:
 
-    choice = input(": ")
+    choice = input("command: ")
     match choice:
         case "help":
             print("Commands: view, add, delete, complete, quit")
@@ -63,15 +78,17 @@ while exit is not True:
             task = input("Add new task: ")
             add_new_task(task)
         case "delete":
-            view_tasks()
-            id = int(input("Enter task ID: "))
-            delete_task(id)
-            print("Task successfully removed")
+            try:
+                id = int(input("Enter task ID: "))
+                delete_task(id)
+            except ValueError:
+                print("Invalid input! Please enter a number")
         case "complete":
-            view_tasks()
-            id = int(input("Enter task ID: "))
-            complete_task(id)
-            print("Task marked as completed")
+            try:
+                id = int(input("Enter task ID: "))
+                complete_task(id)
+            except ValueError:
+                print("Invalid input! Please enter a number")
         case "quit":
             exit = True
         case _:
