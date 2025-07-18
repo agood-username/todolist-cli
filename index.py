@@ -28,6 +28,23 @@ def view_tasks():
             print(f"ID:{task["id"]} : {task["task"]} : {status}")
 
 
+def complete_task(task_id):
+    for task in tasks:
+        if task["id"] == task_id:
+            task["completed"] = True
+            break
+        else:
+            print('ID not found')
+
+
+def delete_task(task_id):
+    for task in tasks:
+        if task["id"] == task_id:
+            tasks.remove(task)
+        else:
+            print('ID not found')
+
+
 exit = False
 print("Welcome to todolist-cli, enter help for a list of commands")
 while exit is not True:
@@ -43,9 +60,15 @@ while exit is not True:
             task = input("Add new task: ")
             add_new_task(task)
         case "delete":
-            print("This is for deleting task")
+            view_tasks()
+            id = int(input("Enter task ID: "))
+            delete_task(id)
+            print("Task successfully removed")
         case "complete":
-            print("This is for completing task")
+            view_tasks()
+            id = int(input("Enter task ID: "))
+            complete_task(id)
+            print("Task marked as completed")
         case "quit":
             exit = True
         case _:
