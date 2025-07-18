@@ -1,5 +1,8 @@
 from random import randint
-tasks = []
+
+import storage
+
+tasks = storage.load_from_json_file()
 
 
 def generate_task_id():
@@ -14,6 +17,7 @@ def generate_task_id():
 def add_new_task(task_name):
     new_task = {"id": generate_task_id(), "task": task_name, "completed": False}
     tasks.append(new_task)
+    storage.save_to_json_file(tasks)
     print("Task added")
 
 
@@ -32,17 +36,16 @@ def complete_task(task_id):
     for task in tasks:
         if task["id"] == task_id:
             task["completed"] = True
+            storage.save_to_json_file(tasks)
             break
-        else:
-            print('ID not found')
 
 
 def delete_task(task_id):
     for task in tasks:
         if task["id"] == task_id:
             tasks.remove(task)
-        else:
-            print('ID not found')
+            storage.save_to_json_file(tasks)
+            break
 
 
 exit = False
